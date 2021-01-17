@@ -1,2 +1,2 @@
 # dictionary-android
-[ИНГАПЕТ](iNGAPEth/dictionary-android)
+[ИНГАПЕТ](https://github.com/iNGAPEth/dictionary-android)
