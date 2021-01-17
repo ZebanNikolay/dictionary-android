@@ -1,3 +1,2 @@
 # dictionary-android
-## Contributors
-### iNGAPEth
+[ИНГАПЕТ](iNGAPEth/dictionary-android)
