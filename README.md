@@ -4,3 +4,4 @@ App for translate between Nivhk, Russian and English.
 [Alexandr Vorontsov](https://github.com/alexvrntsv)  
 [Anatoliy Moshkovskiy](https://github.com/iNGAPEth)  
 [Aleksandr Makarov](https://github.com/patterne)
+[Krasilnikov Nikolay](https://github.com/ZebanNikolay)
