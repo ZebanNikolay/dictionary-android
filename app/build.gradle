@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.ncbs.dictionary"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -35,9 +35,11 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'android.arch.lifecycle:livedata:1.1.1'
     implementation 'android.arch.lifecycle:viewmodel:1.1.1'
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha01'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

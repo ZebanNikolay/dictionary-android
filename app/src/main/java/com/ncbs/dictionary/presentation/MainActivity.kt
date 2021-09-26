@@ -1,18 +1,21 @@
 package com.ncbs.dictionary.presentation
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ncbs.dictionary.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val splashScreen = installSplashScreen()
+
         setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
-                    .commitNow()
-        }
+    }
+
+    private fun installSplashScreen() {
+
     }
 }
