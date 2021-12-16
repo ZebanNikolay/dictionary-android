@@ -33,9 +33,16 @@ android {
 }
 
 dependencies {
+    def androidx_version = "1.4.0"
+    def lifecycle_version = "2.4.0"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.activity:activity-ktx:$androidx_version"
+    implementation "androidx.fragment:fragment-ktx:$androidx_version"
+    implementation "androidx.appcompat:appcompat:$androidx_version"
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
+    implementation "com.google.android.material:material:$androidx_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'android.arch.lifecycle:livedata:1.1.1'
-    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-RC2'
 }
