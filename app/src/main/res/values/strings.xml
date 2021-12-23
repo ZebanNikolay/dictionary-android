@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Dictionary</string>
+    <string name="toolbar_title">Словарь</string>
+    <string name="language">Язык</string>
+    <string name="language_nv">Нивхский</string>
+    <string name="language_ru">Русский</string>
+    <string name="language_en">Английский</string>
 </resources>
