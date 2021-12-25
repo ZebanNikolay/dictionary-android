@@ -6,8 +6,14 @@ import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.ncbs.dictionary.R
 import com.ncbs.dictionary.databinding.MainFragmentBinding
+import com.ncbs.dictionary.domain.Language
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -33,31 +39,35 @@ class MainFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.language_action -> {
-                    showMenu(binding.toolbar.findViewById(R.id.language_action), R.menu.popup_language)
+                    showMenu(
+                        binding.toolbar.findViewById(R.id.language_action),
+                        R.menu.popup_language
+                    )
                     true
                 }
                 else -> false
             }
         }
-        print(viewModel.selectedLocale)
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
         val popup = PopupMenu(context!!, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
+        popup.menu.findItem(viewModel.selectedLocale.value.menuId).isChecked = true
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when (menuItem.itemId) {
+            viewModel.selectedLocale.value = when (menuItem.itemId) {
                 R.id.nv_language_action -> {
-                    true
+                    Language.NIVKH
                 }
                 R.id.ru_language_action -> {
-                    true
+                    Language.RUSSIAN
                 }
                 R.id.en_language_action -> {
-                    true
+                    Language.ENGLISH
                 }
-                else -> false
+                else -> return@setOnMenuItemClickListener false
             }
+            true
         }
         popup.show()
     }
