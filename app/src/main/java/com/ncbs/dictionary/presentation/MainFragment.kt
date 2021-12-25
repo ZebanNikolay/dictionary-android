@@ -15,7 +15,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: WordsListViewModel by viewModels()
 
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
@@ -39,6 +39,7 @@ class MainFragment : Fragment() {
                 else -> false
             }
         }
+        print(viewModel.selectedLocale)
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) {
