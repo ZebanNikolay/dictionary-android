@@ -9,4 +9,5 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="backgroundColor">#ffffff</color>
+    <color name="dividerColor">#1A000000</color>
 </resources>

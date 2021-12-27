@@ -6,13 +6,17 @@ import com.ncbs.dictionary.domain.DictionaryInteractor
 import com.ncbs.dictionary.domain.Language
 import com.ncbs.dictionary.domain.Word
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class WordsListViewModel : ViewModel() {
 
     private val interactor = DictionaryInteractor()
 
-    private lateinit var words: List<Word>
+    private val _words: MutableStateFlow<List<Word>> = MutableStateFlow(emptyList())
+    val words: StateFlow<List<Word>>
+        get() = _words
+
     val isPlayButtonVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val selectedLocale: MutableStateFlow<Language> = MutableStateFlow(Language.NIVKH)
 
@@ -20,16 +24,11 @@ class WordsListViewModel : ViewModel() {
         selectedLocale.value = Language.NIVKH
         viewModelScope.launch {
             try {
-                words = interactor.getWords()
-                println(words.joinToString())
+                _words.value = interactor.getWords()
             } catch (e: Exception) {
                 // TODO: 12/23/2021
             }
         }
-    }
-
-    fun onDock() {
-
     }
 
     fun getTranslateBySelectedLocale(word: Word?): String? {

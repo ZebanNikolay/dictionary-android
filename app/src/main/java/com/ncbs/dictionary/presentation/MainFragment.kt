@@ -10,10 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import com.ncbs.dictionary.R
 import com.ncbs.dictionary.databinding.MainFragmentBinding
 import com.ncbs.dictionary.domain.Language
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+
 
 class MainFragment : Fragment() {
 
@@ -26,11 +26,16 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
+    private val wordsAdapter: WordsAdapter = WordsAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
+        binding.wordsList.adapter = wordsAdapter
+        val dividerItemDecoration = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        binding.wordsList.addItemDecoration(dividerItemDecoration)
         return binding.root
     }
 
@@ -46,6 +51,16 @@ class MainFragment : Fragment() {
                     true
                 }
                 else -> false
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.selectedLocale.collect {
+                wordsAdapter.setCurrentLanguage(it)
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.words.collect {
+                wordsAdapter.setData(it)
             }
         }
     }
