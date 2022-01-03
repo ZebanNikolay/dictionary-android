@@ -6,4 +6,6 @@
     <string name="language_ru">Русский</string>
     <string name="language_en">Английский</string>
     <string name="search_hint">Поиск</string>
+    <string name="ru_label">RU</string>
+    <string name="en_label">EN</string>
 </resources>

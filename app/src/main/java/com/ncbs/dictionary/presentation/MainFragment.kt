@@ -1,5 +1,6 @@
 package com.ncbs.dictionary.presentation
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -13,6 +14,7 @@ import com.ncbs.dictionary.domain.Language
 import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
 class MainFragment : Fragment() {
@@ -26,7 +28,17 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val wordsAdapter: WordsAdapter = WordsAdapter()
+    private var currentBottomSheet: BottomSheetDialogFragment? = null
+
+    private val wordsAdapter: WordsAdapter = WordsAdapter { word ->
+        val activity = activity ?: return@WordsAdapter
+        WordDetailsBottomSheet().apply {
+            this.word = word
+            currentBottomSheet?.dismissAllowingStateLoss()
+            currentBottomSheet = this
+            show(activity.supportFragmentManager, WordDetailsBottomSheet::class.simpleName)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

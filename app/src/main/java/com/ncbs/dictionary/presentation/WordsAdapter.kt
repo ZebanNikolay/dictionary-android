@@ -7,7 +7,7 @@ import com.ncbs.dictionary.databinding.ListItemWordBinding
 import com.ncbs.dictionary.domain.Language
 import com.ncbs.dictionary.domain.Word
 
-class WordsAdapter : RecyclerView.Adapter<WordViewHolder>() {
+class WordsAdapter(private val onWordClicked: (Word) -> Unit) : RecyclerView.Adapter<WordsAdapter.WordViewHolder>() {
 
     private var list: List<Word> = emptyList()
     private var currentLanguage: Language = Language.NIVKH
@@ -31,11 +31,14 @@ class WordsAdapter : RecyclerView.Adapter<WordViewHolder>() {
         this.currentLanguage = currentLanguage
         notifyDataSetChanged()
     }
-}
 
-class WordViewHolder(private val viewBinding: ListItemWordBinding) : RecyclerView.ViewHolder(viewBinding.title) {
+    inner class WordViewHolder(private val viewBinding: ListItemWordBinding) : RecyclerView.ViewHolder(viewBinding.title) {
 
-    fun bind(word: Word, currentLanguage: Language) {
-        viewBinding.title.text = word.getTranslate(currentLanguage.code)
+        fun bind(word: Word, currentLanguage: Language) {
+            viewBinding.title.text = word.getTranslate(currentLanguage.code)
+            viewBinding.root.setOnClickListener {
+                onWordClicked(word)
+            }
+        }
     }
 }
