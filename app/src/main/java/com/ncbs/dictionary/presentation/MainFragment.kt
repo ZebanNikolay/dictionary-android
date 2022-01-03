@@ -1,6 +1,5 @@
 package com.ncbs.dictionary.presentation
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-
 
 class MainFragment : Fragment() {
 

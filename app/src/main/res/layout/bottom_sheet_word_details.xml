@@ -21,6 +21,7 @@
             tools:text="Нивхское слово" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/playButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -32,41 +33,42 @@
     <com.google.android.material.divider.MaterialDivider
         style="@style/Widget.Material3.MaterialDivider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:dividerColor="?colorPrimary"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/ruLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceBody1"
-        android:text="@string/ru_label"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
+        android:text="@string/ru_label"
+        android:textAppearance="?textAppearanceBody1" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/ruWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:textAppearance="?textAppearanceHeadline6"
-        tools:text="Слово"
-        android:layout_marginStart="16dp"/>
+        tools:text="Слово" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/enLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceBody1"
-        android:text="@string/en_label"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
+        android:text="@string/en_label"
+        android:textAppearance="?textAppearanceBody1" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/enWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
         android:textAppearance="?textAppearanceHeadline6"
-        tools:text="Word"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"/>
+        tools:text="Word" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
