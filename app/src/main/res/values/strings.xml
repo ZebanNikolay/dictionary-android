@@ -9,5 +9,6 @@
     <string name="ru_label">RU</string>
     <string name="en_label">EN</string>
     <string name="update">Обновить базу слов</string>
-    <string name="dialog_update_words_title">Обновление базы слов...</string>
+    <string name="dialog_update_words_title">Обновление базы слов…</string>
+    <string name="error_message">Произошла ошибка, проверте подключение к интернету</string>
 </resources>

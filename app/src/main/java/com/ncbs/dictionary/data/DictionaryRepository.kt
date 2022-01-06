@@ -25,14 +25,15 @@ class DictionaryRepository(
     private val client = OkHttpClient()
 
     suspend fun getWords(): List<Word> = withContext(Dispatchers.IO) {
-        Log.d(TAG, "Start read words from [$WORDS_FILE_NAME]")
-        val file = File(WORDS_FILE_NAME)
+        val path = "${context.filesDir}/$WORDS_FILE_NAME"
+        Log.d(TAG, "Start read words from [$path]")
+        val file = File(path)
         return@withContext if (file.exists()) {
             val list = Json.decodeFromString<List<Word>>(file.readText())
-            Log.d(TAG, "Read [$WORDS_FILE_NAME] successfully")
+            Log.d(TAG, "Read [$path] successfully")
             list
         } else {
-            Log.d(TAG, "[$WORDS_FILE_NAME] isn't exist")
+            Log.d(TAG, "[$path] isn't exist")
             updateWords()
         }
     }

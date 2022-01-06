@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.filterNotNull
 
 class MainFragment : Fragment() {
 
@@ -71,6 +74,9 @@ class MainFragment : Fragment() {
                 else -> false
             }
         }
+        binding.searchBar.addTextChangedListener { text ->
+            viewModel.onSearchQueryChanged((text ?: "").toString())
+        }
         lifecycleScope.launch {
             viewModel.selectedLocale.collect {
                 wordsAdapter.setCurrentLanguage(it)
@@ -80,6 +86,12 @@ class MainFragment : Fragment() {
             viewModel.words.collect {
                 wordsAdapter.setData(it)
             }
+        }
+        lifecycleScope.launch {
+            viewModel.errorMessage.filterNotNull()
+                .collect {
+                    Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_LONG).show()
+                }
         }
         lifecycleScope.launch {
             viewModel.isUpdateDialogShowing.collect {
