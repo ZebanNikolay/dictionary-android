@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainFragment : Fragment() {
 
@@ -27,6 +29,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var currentBottomSheet: BottomSheetDialogFragment? = null
+    private var updateDialog: AlertDialog? = null
 
     private val wordsAdapter: WordsAdapter = WordsAdapter { word ->
         val activity = activity ?: return@WordsAdapter
@@ -44,7 +47,8 @@ class MainFragment : Fragment() {
     ): View {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         binding.wordsList.adapter = wordsAdapter
-        val dividerItemDecoration = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        val dividerItemDecoration =
+            DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
         binding.wordsList.addItemDecoration(dividerItemDecoration)
         return binding.root
     }
@@ -60,6 +64,10 @@ class MainFragment : Fragment() {
                     )
                     true
                 }
+                R.id.update_action -> {
+                    viewModel.updateWords()
+                    true
+                }
                 else -> false
             }
         }
@@ -73,6 +81,28 @@ class MainFragment : Fragment() {
                 wordsAdapter.setData(it)
             }
         }
+        lifecycleScope.launch {
+            viewModel.isUpdateDialogShowing.collect {
+                if (it) {
+                    showUpdateDialog(view)
+                } else {
+                    updateDialog?.dismiss()
+                    updateDialog = null
+                }
+            }
+        }
+    }
+
+    private fun showUpdateDialog(view: View) {
+        updateDialog = MaterialAlertDialogBuilder(
+            view.context,
+            R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
+        )
+            .setMessage(R.string.dialog_update_words_title)
+            .setCancelable(false)
+            .setView(R.layout.dialog_update_words)
+            .create()
+        updateDialog?.show()
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) {

@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.ncbs.dictionary.domain.DictionaryInteractor
 import com.ncbs.dictionary.domain.Language
 import com.ncbs.dictionary.domain.Word
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WordsListViewModel : ViewModel() {
 
@@ -17,7 +19,7 @@ class WordsListViewModel : ViewModel() {
     val words: StateFlow<List<Word>>
         get() = _words
 
-    val isPlayButtonVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isUpdateDialogShowing: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val selectedLocale: MutableStateFlow<Language> = MutableStateFlow(Language.NIVKH)
 
     init {
@@ -31,17 +33,16 @@ class WordsListViewModel : ViewModel() {
         }
     }
 
-    fun getTranslateBySelectedLocale(word: Word?): String? {
-        word ?: return null
-        return word.locales[selectedLocale.value.code]?.value
-    }
-
     fun onSearchQueryChanged(query: String? = "") {
         query ?: return
 
     }
 
-    fun onPlay() {
-
+    fun updateWords() {
+        viewModelScope.launch {
+            isUpdateDialogShowing.value = true
+            _words.value = interactor.updateWords()
+            isUpdateDialogShowing.value = false
+        }
     }
 }

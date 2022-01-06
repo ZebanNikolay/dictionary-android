@@ -8,4 +8,10 @@
         android:title="@string/language"
         android:contentDescription="@string/language"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/update_action"
+        android:title="@string/update"
+        android:contentDescription="@string/update"
+        app:showAsAction="never" />
 </menu>
