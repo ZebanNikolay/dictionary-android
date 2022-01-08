@@ -44,7 +44,6 @@ dependencies {
     implementation "androidx.activity:activity-ktx:$androidx_version"
     implementation "androidx.fragment:fragment-ktx:$androidx_version"
     implementation "androidx.appcompat:appcompat:$androidx_version"
-    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     implementation "com.google.android.material:material:1.5.0-rc01"
 
     implementation "com.squareup.okhttp3:okhttp:4.9.3"
