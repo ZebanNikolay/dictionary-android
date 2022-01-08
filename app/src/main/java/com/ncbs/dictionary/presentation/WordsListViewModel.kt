@@ -30,11 +30,13 @@ class WordsListViewModel : ViewModel() {
     init {
         selectedLocale.value = Language.NIVKH
         viewModelScope.launch {
+            isUpdateDialogShowing.value = true
             try {
                 _words.value = interactor.getWords()
             } catch (e: Exception) {
                 errorMessage.tryEmit(R.string.error_message)
             }
+            isUpdateDialogShowing.value = false
         }
     }
 

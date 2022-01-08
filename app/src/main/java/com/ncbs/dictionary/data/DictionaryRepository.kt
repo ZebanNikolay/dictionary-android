@@ -13,7 +13,7 @@ import java.io.File
 import java.io.IOException
 import kotlin.coroutines.suspendCoroutine
 
-const val HOST_URL = "https://dictionary-f4cbd.firebaseapp.com/data"
+const val HOST_URL = "http://bibl-nogl-dictionary.ru/data"
 private const val WORDS_FILE_NAME = "words.json"
 private const val WORDS_FILE_URL = "$HOST_URL/$WORDS_FILE_NAME"
 private const val TAG = "DictionaryRepository"
