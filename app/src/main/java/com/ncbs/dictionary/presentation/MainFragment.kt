@@ -71,6 +71,13 @@ class MainFragment : Fragment() {
                     viewModel.updateWords()
                     true
                 }
+                R.id.about_action -> {
+                    activity?.supportFragmentManager?.beginTransaction()?.let {
+                        it.replace(R.id.container, AboutFragment.newInstance())
+                        it.commitAllowingStateLoss()
+                    }
+                    true
+                }
                 else -> false
             }
         }

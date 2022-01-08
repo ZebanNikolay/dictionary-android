@@ -14,4 +14,10 @@
         android:title="@string/update"
         android:contentDescription="@string/update"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about_action"
+        android:title="@string/about_title"
+        android:contentDescription="@string/about_title"
+        app:showAsAction="never" />
 </menu>
