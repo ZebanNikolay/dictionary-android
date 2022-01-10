@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".presentation.AboutFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         style="@style/Widget.MaterialComponents.AppBarLayout.Primary"
@@ -24,15 +25,28 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".presentation.AboutFragment">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textview.MaterialTextView
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/about_text"
-            android:textAppearance="?textAppearanceBody1" />
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/splash_screen"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="32dp"
+                android:text="@string/about_text"
+                android:textAppearance="?textAppearanceBody1" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </ScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>
