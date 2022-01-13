@@ -20,7 +20,7 @@ class WordsListViewModel : ViewModel() {
     private val _words: MutableStateFlow<List<Word>> = MutableStateFlow(emptyList())
     val words: StateFlow<List<Word>> = combine(query, _words) { query, words ->
         if (query.isBlank()) return@combine words
-        words.filter { word -> word.locales.values.any { it.value.contains(query) } }
+        words.filter { word -> word.locales.values.any { it.value.contains(query, ignoreCase = true) } }
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     val isUpdateDialogShowing: MutableStateFlow<Boolean> = MutableStateFlow(false)
