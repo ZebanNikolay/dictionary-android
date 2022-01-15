@@ -7,23 +7,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ncbs.dictionary.data.HOST_URL
 import com.ncbs.dictionary.databinding.BottomSheetWordDetailsBinding
+import com.ncbs.dictionary.domain.DictionaryInteractor
 import com.ncbs.dictionary.domain.Language
 import com.ncbs.dictionary.domain.Word
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class WordDetailsBottomSheet : BottomSheetDialogFragment() {
+class WordDetailsBottomSheet(
+    private val word: Word
+) : BottomSheetDialogFragment() {
+
+    private val dictionaryInteractor: DictionaryInteractor = DictionaryInteractor()
 
     private var _binding: BottomSheetWordDetailsBinding? = null
     private val binding get() = _binding!!
 
-    var word: Word? = null
+    private var player: MediaPlayer? = null
 
-    private val player: MediaPlayer? by lazy {
-        val nvLocale = word?.locales?.get(Language.NIVKH.code) ?: return@lazy null
-        MediaPlayer.create(context, Uri.parse("$HOST_URL/${nvLocale.audioPath}"))
+    private suspend fun createPlayer(): MediaPlayer? {
+        val nvLocale = word.locales[Language.NIVKH.code] ?: return null
+        return if (dictionaryInteractor.isUrlExist(nvLocale.audioPath)) {
+            MediaPlayer.create(context, Uri.parse(nvLocale.audioPath))
+        } else {
+            null
+        }
     }
 
     override fun onCreateView(
@@ -32,17 +44,22 @@ class WordDetailsBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = BottomSheetWordDetailsBinding.inflate(inflater, container, false).apply {
-            val nvLocale = word?.locales?.get(Language.NIVKH.code) ?: return@apply
-            nvWord.text = nvLocale.value
-            ruWord.text = word?.getTranslate(Language.RUSSIAN.code)
-            enWord.text = word?.getTranslate(Language.ENGLISH.code)
-            playButton.isVisible = !nvLocale.audioPath.isNullOrBlank()
-            playButton.setOnClickListener {
-                if (player?.isPlaying == true) return@setOnClickListener
-                try {
-                    player?.start()
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            lifecycleScope.launch {
+                val nvLocale = word.locales[Language.NIVKH.code] ?: return@launch
+                nvWord.text = nvLocale.value
+                ruWord.text = word.getTranslate(Language.RUSSIAN.code)
+                enWord.text = word.getTranslate(Language.ENGLISH.code)
+                player = createPlayer()
+                playButton.isVisible = player != null
+                playButton.setOnClickListener {
+                    if (player?.isPlaying == true) return@setOnClickListener
+                    try {
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            player?.start()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }

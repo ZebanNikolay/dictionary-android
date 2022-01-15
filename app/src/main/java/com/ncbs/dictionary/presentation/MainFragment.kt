@@ -36,8 +36,7 @@ class MainFragment : Fragment() {
 
     private val wordsAdapter: WordsAdapter = WordsAdapter { word ->
         val activity = activity ?: return@WordsAdapter
-        WordDetailsBottomSheet().apply {
-            this.word = word
+        WordDetailsBottomSheet(word).apply {
             currentBottomSheet?.dismissAllowingStateLoss()
             currentBottomSheet = this
             show(activity.supportFragmentManager, WordDetailsBottomSheet::class.simpleName)

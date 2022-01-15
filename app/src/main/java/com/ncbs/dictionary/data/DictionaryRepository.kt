@@ -3,6 +3,8 @@ package com.ncbs.dictionary.data
 import android.content.Context
 import android.util.Log
 import com.ncbs.dictionary.App
+import com.ncbs.dictionary.domain.Language
+import com.ncbs.dictionary.domain.LocaleData
 import com.ncbs.dictionary.domain.Word
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,6 +13,9 @@ import kotlinx.serialization.json.Json
 import okhttp3.*
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
+import java.net.HttpURLConnection
+import java.net.URL
 import kotlin.coroutines.suspendCoroutine
 
 const val HOST_URL = "http://bibl-nogl-dictionary.ru/data"
@@ -29,13 +34,29 @@ class DictionaryRepository(
         Log.d(TAG, "Start read words from [$path]")
         val file = File(path)
         return@withContext if (file.exists()) {
-            val list = Json.decodeFromString<List<Word>>(file.readText())
+            val list = Json.decodeFromString<List<WordDto>>(file.readText())
             Log.d(TAG, "Read [$path] successfully")
-            list
+            list.mapNotNull(::mapToWord)
         } else {
             Log.d(TAG, "[$path] isn't exist")
             updateWords()
         }
+    }
+
+    private fun mapToWord(wordDto: WordDto): Word? {
+        if (wordDto.id.isNullOrBlank() || wordDto.nv.isNullOrBlank() || wordDto.ru.isNullOrBlank() || wordDto.en.isNullOrBlank()) return null
+        return Word(
+            id = wordDto.id.toString(),
+            locales = mapOf(
+                Language.NIVKH.code to LocaleData(
+                    Language.NIVKH,
+                    wordDto.nv,
+                    "$HOST_URL/audio/${wordDto.id}.mp3"
+                ),
+                Language.RUSSIAN.code to LocaleData(Language.RUSSIAN, wordDto.ru),
+                Language.ENGLISH.code to LocaleData(Language.ENGLISH, wordDto.en),
+            )
+        )
     }
 
     suspend fun updateWords(): List<Word> = suspendCoroutine { continuation ->
@@ -57,7 +78,9 @@ class DictionaryRepository(
                 Log.d(TAG, "Fetch words from server successfully")
                 val string = response.body!!.string()
                 writeWordsToFile(string)
-                continuation.resumeWith(Result.success(Json.decodeFromString(string)))
+                val list = Json.decodeFromString<List<WordDto>>(string)
+                    .mapNotNull(::mapToWord)
+                continuation.resumeWith(Result.success(list))
             }
         })
     }
@@ -76,5 +99,21 @@ class DictionaryRepository(
         }
     }
 
-    fun hasWordsData(): Boolean = File("${context.filesDir}/$WORDS_FILE_NAME").exists()
+    suspend fun isUrlExist(url: String?): Boolean {
+        url ?: return false
+        return withContext(Dispatchers.IO) {
+            try {
+                HttpURLConnection.setFollowRedirects(false)
+                val urlConnection: HttpURLConnection =
+                    URL(url).openConnection() as HttpURLConnection
+                urlConnection.requestMethod = "HEAD"
+                urlConnection.responseCode == HttpURLConnection.HTTP_OK
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+        }.also {
+            Log.d(TAG, "Url = $url is exist = $it")
+        }
+    }
 }

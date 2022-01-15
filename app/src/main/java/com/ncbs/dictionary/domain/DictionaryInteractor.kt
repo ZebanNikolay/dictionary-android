@@ -10,5 +10,5 @@ class DictionaryInteractor(
 
     suspend fun updateWords(): List<Word> = repository.updateWords()
 
-    fun hasWordsData(): Boolean = repository.hasWordsData()
+    suspend fun isUrlExist(url: String?): Boolean = repository.isUrlExist(url)
 }
